@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CHIGGA</string>
+    <string name="item_name_1">嘻哈圈</string>
+    <string name="item_name_2">奇格镇</string>
+    <string name="item_name_3">黄鬼</string>
+    <string name="back">返回</string>
+    <string name="dian_zan">点赞</string>
+    <string name="share">分享</string>
+    <string name="write_comment">写评论</string>
+    <string name="my_attention">我的关注</string>
+    <string name="my_fans">粉丝</string>
+    <string name="my_published">已发布</string>
+    <string name="my_all_fans">全部粉丝</string>
+    <string name="my_interested_fans">粉丝中你可能感兴趣的人</string>
+    <string name="more">更多</string>
+    <string name="comment_hint">随便说点奇格的</string>
+</resources>

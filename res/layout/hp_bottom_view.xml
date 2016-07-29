@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="360dp"
+    android:layout_height="57dp"
+    android:orientation="horizontal"
+    android:background="@drawable/tab_bottom_bg"
+    android:layout_gravity="center"
+    >
+
+    <!-- zan -->
+    <LinearLayout
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:id="@+id/btn_dian_zan"
+        android:background="@color/transparent"
+        android:gravity="center"
+        > 
+        <ImageView
+            android:id="@+id/dian_zan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dian_zan_2"
+            android:layout_gravity="center"
+            android:background="@color/transparent"
+            /> 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dian_zan"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            /> 
+    </LinearLayout>
+
+    <!-- share -->
+    <LinearLayout
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:id="@+id/btn_share"
+        android:background="@color/transparent"
+        android:gravity="center"
+        > 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/share"
+            android:background="@color/transparent"
+            /> 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/share"
+            android:textColor="@color/white"
+            /> 
+    </LinearLayout>
+
+    <!-- comment -->
+    <LinearLayout
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:id="@+id/write_comment"
+        android:gravity="center"
+        android:background="@color/transparent"
+        > 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/write_comment"
+            android:background="@drawable/write_comment"
+            android:gravity="center"
+            />
+    </LinearLayout>
+</LinearLayout>
