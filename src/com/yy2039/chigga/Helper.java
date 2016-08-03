@@ -100,5 +100,4 @@ public class Helper {
 
         view.startAnimation( anim );
     }
-
 }

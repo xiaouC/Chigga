@@ -3,6 +3,11 @@ package com.yy2039.chigga;
 import java.util.List;
 import java.util.ArrayList;
 
+import android.util.Log;
+
+import org.json.JSONObject;
+import org.json.JSONException;
+
 public class YYDataSource {
     public static PersonalInfo persion_info = new PersonalInfo( "Charlie-The-Creator", false, "CTC-造物主，这是无法阻止的Charlie,你知道的...", 39, 3724, 68 );
 
@@ -22,6 +27,18 @@ public class YYDataSource {
         for( int i=0; i < 25; ++i ) {
             persion_info.addFansInfo( "", "奇婴扮嘻哈", "一个特立独行的奇怪婴儿，不喜勿扰。", "@小泽玛利亚 等28万人关注了", 1 );
         }
+
+        String URL = "http://23.105.198.234/api/categories";
+        YYHttpRequest.sendGetRequest( URL, null, new YYHttpRequest.onResponseListener() {
+            public void onResponse( String data ) {
+                Log.v( "Fly", "onResponse : " + data );
+                try {
+                    JSONObject msg_info = new JSONObject( data );
+                } catch ( JSONException e ) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public static void getHomePageItemList() {

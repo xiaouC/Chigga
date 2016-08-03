@@ -1,10 +1,17 @@
 package com.yy2039.chigga;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.net.URLEncoder;
+import java.io.UnsupportedEncodingException;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,6 +19,7 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.util.LruCache;
+import android.util.Log;
 
 public class ImageDownLoader {
     /** 
@@ -40,7 +48,7 @@ public class ImageDownLoader {
             }
         };
 
-        fileUtils = new FileUtils(context);
+        fileUtils = new FileUtils( context );
     }
 
     /** 
@@ -80,6 +88,35 @@ public class ImageDownLoader {
         return mMemoryCache.get( key );
     }
 
+    class AsyncLoadResult extends Object {
+        String url;
+        Bitmap bitmap;
+        AsyncLoadResult( String u, Bitmap b ) { url = u; bitmap = b; }
+    }
+
+    private Map<String, List<onImageLoaderListener>> download_listeners = new HashMap<String, List<onImageLoaderListener>>();
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage( Message msg ) {
+            AsyncLoadResult result = (AsyncLoadResult)msg.obj;
+
+            // 将 Bitmap 加入内存缓存  
+            addBitmapToMemoryCache( result.url, result.bitmap );
+
+            List<onImageLoaderListener> url_listeners = download_listeners.get( result.url );
+            if( url_listeners != null ) {
+                for( int i=0; i < url_listeners.size(); ++i ) {
+                    onImageLoaderListener listener = url_listeners.get( i );
+                    listener.onImageLoader( result.bitmap, result.url );
+                }
+
+                download_listeners.remove( result.url );
+            }
+
+            result.bitmap = null;
+        }
+    };
+
     /** 
      * 先从内存缓存中获取Bitmap,如果没有就从SD卡或者手机缓存中获取，SD卡或者手机缓存 
      * 没有就去下载 
@@ -91,60 +128,48 @@ public class ImageDownLoader {
         //替换Url中非字母和非数字的字符，这里比较重要，因为我们用Url作为文件名，比如我们的Url  
         //是Http://xiaanming/abc.jpg;用这个作为图片名称，系统会认为xiaanming为一个目录，  
         //我们没有创建此目录保存文件就会报错  
-        final String subUrl = url.replaceAll( "[^\\w]", "" );
-        Bitmap bitmap = showCacheBitmap( subUrl );
+        Bitmap bitmap = getBitmapFromMemCache( url );
         if( bitmap != null ) {
             return bitmap;
         } else {
-            final Handler handler = new Handler() {
-                @Override
-                public void handleMessage( Message msg ) {
-                    super.handleMessage( msg );
+            List<onImageLoaderListener> url_listeners = download_listeners.get( url );
+            if( url_listeners == null ) {
+                url_listeners = new ArrayList<onImageLoaderListener>();
+                url_listeners.add( listener );
 
-                    Bitmap bitmap = (Bitmap)msg.obj;
-                    listener.onImageLoader( bitmap, url );
-
-                    //将Bitmap 加入内存缓存  
-                    addBitmapToMemoryCache( subUrl, bitmap );
-                }
-            };
+                download_listeners.put( url, url_listeners );
+            } else {
+                url_listeners.add( listener );
+            }
 
             getThreadPool().execute( new Runnable() {
                 @Override
                 public void run() {
-                    Bitmap bitmap = getBitmapFormUrl( url );
-                    Message msg = handler.obtainMessage();
-                    msg.obj = bitmap;
-                    handler.sendMessage( msg );
+                    final String subUrl = url.replaceAll( "[^\\w]", "" );
 
-                    try {  
-                        //保存在SD卡或者手机目录  
-                        fileUtils.savaBitmap( subUrl, bitmap );
-                    } catch ( IOException e ) {
-                        e.printStackTrace();
+                    // 从 SD 卡获取手机里面获取 Bitmap 
+                    if ( fileUtils.isFileExists( subUrl ) && fileUtils.getFileSize( subUrl ) != 0 ) {
+                        Bitmap bitmap = fileUtils.getBitmap( subUrl );
+
+                        Message msg = handler.obtainMessage();
+                        msg.obj = new AsyncLoadResult( url, bitmap );
+                        handler.sendMessage( msg );
+                    } else {
+                        Bitmap bitmap = getBitmapFormUrl( url );
+
+                        Message msg = handler.obtainMessage();
+                        msg.obj = new AsyncLoadResult( url, bitmap );
+                        handler.sendMessage( msg );
+
+                        try {  
+                            //保存在SD卡或者手机目录  
+                            fileUtils.savaBitmap( subUrl, bitmap );
+                        } catch ( IOException e ) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
-        }
-
-        return null;
-    }
-
-    /** 
-     * 获取Bitmap, 内存中没有就去手机或者sd卡中获取，这一步在getView中会调用，比较关键的一步 
-     * @param url 
-     * @return 
-     */  
-    public Bitmap showCacheBitmap( String url ) {
-        if( getBitmapFromMemCache( url ) != null ) {
-            return getBitmapFromMemCache( url );
-        } else if ( fileUtils.isFileExists( url ) && fileUtils.getFileSize( url ) != 0 ) {
-            //从SD卡获取手机里面获取Bitmap 
-            Bitmap bitmap = fileUtils.getBitmap( url );
-
-            //将Bitmap 加入内存缓存  
-            addBitmapToMemoryCache( url, bitmap );
-            return bitmap;
         }
 
         return null;
@@ -164,8 +189,10 @@ public class ImageDownLoader {
             con.setConnectTimeout( 10 * 1000 );
             con.setReadTimeout( 10 * 1000 );
             con.setDoInput( true );
-            con.setDoOutput( true );
+            //con.setDoOutput( true );
             bitmap = BitmapFactory.decodeStream( con.getInputStream() );
+        } catch ( UnsupportedEncodingException e ) {
+            e.printStackTrace();
         } catch ( Exception e ) {
             e.printStackTrace();
         } finally {

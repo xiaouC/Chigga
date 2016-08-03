@@ -28,6 +28,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.app.Dialog;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.graphics.Bitmap;
+import android.widget.ImageView.ScaleType;
 
 public class WelcomeActivity extends Activity
 {
@@ -47,6 +49,7 @@ public class WelcomeActivity extends Activity
     protected Integer yy_scrolled_y = null;
 
     YYDataSource yy_data_source = null;
+    ImageDownLoader yy_image_downloader = null;
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -55,6 +58,7 @@ public class WelcomeActivity extends Activity
         setContentView(R.layout.main_view);
 
         yy_data_source = new YYDataSource();
+        yy_image_downloader = new ImageDownLoader( this );
 
         activity = this;
 
@@ -115,7 +119,7 @@ public class WelcomeActivity extends Activity
             }
         });
 
-        clickItem_3();
+        clickItem_1();
 
         if( yy_scrolled_x != null && yy_scrolled_y != null ) {
             //lv.scrollTo( yy_scrolled_x, yy_scrolled_y );
@@ -143,6 +147,7 @@ public class WelcomeActivity extends Activity
         map.put( R.id.item_image, new YYListAdapter.onYYListItemHandler() {
             public void item_handle( Object view_obj, View convertView ) {
                 ImageView iv_obj = (ImageView)view_obj;
+                setImageViewResource( iv_obj, item.imageURL );
             }
         });
         map.put( R.id.item_title, new YYListAdapter.onYYListItemHandler() {
@@ -355,5 +360,20 @@ public class WelcomeActivity extends Activity
         }, null );
         
         return charSequence;
+    }
+
+    public void setImageViewResource( final ImageView iv, String URL ) {
+        iv.setScaleType( ScaleType.FIT_XY );
+        Bitmap bitmap = yy_image_downloader.downloadImage( URL, new ImageDownLoader.onImageLoaderListener() {
+            public void onImageLoader( Bitmap bitmap, String url ) {
+                if( bitmap != null ) {
+                    iv.setImageBitmap( bitmap );
+                }
+            }
+        });
+
+        if( bitmap != null ) {
+            iv.setImageBitmap( bitmap );
+        }
     }
 }

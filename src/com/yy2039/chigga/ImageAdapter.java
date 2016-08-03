@@ -110,14 +110,14 @@ public class ImageAdapter extends BaseAdapter implements OnScrollListener {
         //给ImageView设置Tag,这里已经是司空见惯了  
         mImageView.setTag(mImageUrl);
 
-        /*******************************去掉下面这几行试试是什么效果****************************/  
-        Bitmap bitmap = mImageDownLoader.showCacheBitmap( mImageUrl.replaceAll( "[^\\w]", "" ) );
-        if( bitmap != null ) {
-            mImageView.setImageBitmap( bitmap );
-        } else {
-            mImageView.setImageDrawable( context.getResources().getDrawable( R.drawable.ic_launcher ) );
-        }
-        /**********************************************************************************/  
+        ///*******************************去掉下面这几行试试是什么效果****************************/  
+        //Bitmap bitmap = mImageDownLoader.showCacheBitmap( mImageUrl.replaceAll( "[^\\w]", "" ) );
+        //if( bitmap != null ) {
+        //    mImageView.setImageBitmap( bitmap );
+        //} else {
+        //    mImageView.setImageDrawable( context.getResources().getDrawable( R.drawable.ic_launcher ) );
+        //}
+        ///**********************************************************************************/  
 
         return mImageView;
     }
