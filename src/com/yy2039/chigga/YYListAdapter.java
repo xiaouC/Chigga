@@ -29,9 +29,6 @@ public class YYListAdapter extends BaseAdapter {
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
-    private static YYListAdapter yy_adapter;
-
-    //////////////////////////////////////////////////////////////////////////////////////
     private LayoutInflater mInflater;
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -39,8 +36,6 @@ public class YYListAdapter extends BaseAdapter {
     public List<Map<Integer,onYYListItemHandler>> list_data;    // 数据
 
     public YYListAdapter( Activity activity, Integer layoutRes, List<Map<Integer,onYYListItemHandler>> data ) {
-        yy_adapter = this;
-
         layout_res = layoutRes;
         list_data = data;
 
@@ -86,6 +81,8 @@ public class YYListAdapter extends BaseAdapter {
 
     //////////////////////////////////////////////////////////////////////////////////////
     public static class updateListViewTask extends AsyncTask< String, Integer, String > {
+        public YYListAdapter yy_adapter = null;
+
         @Override
         protected String doInBackground( String... params ) {
             //arr.set( Integer.parseInt( params[0] ), params[1] );

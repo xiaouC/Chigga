@@ -33,6 +33,7 @@ import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.graphics.Color;
 import android.widget.ScrollView;
+import android.webkit.WebView;
 
 class RecommentInfo {
     RecommentInfo( String n1, String n2, String c, String t ) {
@@ -66,45 +67,23 @@ class CommentInfo {
 
 // 
 public class HomePageItem {
+    public String id;
     public String imageURL;         // 
     public String title;
-    public String tip1;
-    public String tip2;
-    public String tip3;
-    public int read_count;
-    public int comment_count;
-    public int zan_count;
+    public String[] tags = { "", "", "" };
+    public String read_count;
+    public String comment_count;
+    public String zan_count;
+    public String user_id;
+    public String user_email;
+    public String user_nick_name;
     public boolean is_zan;
     public boolean is_attention;
     public String page_content;
     public List<CommentInfo> comment_list;
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public HomePageItem(
-            String url,
-            String t,
-            String tip_1,
-            String tip_2,
-            String tip_3,
-            int read,
-            int comment,
-            int zan,
-            boolean zan_flag,
-            boolean attention_flag,
-            String content
-            ) {
-        imageURL = url;
-        title = t;
-        tip1 = tip_1;
-        tip2 = tip_2;
-        tip3 = tip_3;
-        read_count = read;
-        comment_count = comment;
-        zan_count = zan;
-        is_zan = zan_flag;
-        is_attention = attention_flag;
-        page_content = content;
-
+    public HomePageItem() {
         comment_list = new ArrayList<CommentInfo>();
     }
 
@@ -124,6 +103,9 @@ public class HomePageItem {
             public void onInitContentView( View view ) {
                 View content_view = LayoutInflater.from( activity ).inflate( R.layout.hp_content_view, null );
                 ((ScrollView)view).addView( content_view );
+
+                WebView wv = (WebView)content_view.findViewById( R.id.web_view );
+                wv.loadUrl( "http://www.android100.org/html/201311/19/4804.html" );
             }
             public void onInitBottomView( View view ) {
                 View bottom_view = LayoutInflater.from( activity ).inflate( R.layout.hp_bottom_view, null );
@@ -144,13 +126,13 @@ public class HomePageItem {
             }
         });
 
-        // read count
-        TextView tv_read_count_obj = (TextView)view.findViewById( R.id.read_count );
-        tv_read_count_obj.setText( "" + read_count );
+        //// read count
+        //TextView tv_read_count_obj = (TextView)view.findViewById( R.id.read_count );
+        //tv_read_count_obj.setText( "" + read_count );
 
-        // content
-        TextView tv_content_obj = (TextView)view.findViewById( R.id.content );
-        tv_content_obj.setText( page_content );
+        //// content
+        //TextView tv_content_obj = (TextView)view.findViewById( R.id.content );
+        //tv_content_obj.setText( page_content );
 
         // head zan
         final ImageButton ib_head_zan_obj = (ImageButton)view.findViewById( R.id.btn_head_zan );

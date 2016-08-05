@@ -31,6 +31,10 @@ import android.view.LayoutInflater;
 import android.graphics.Bitmap;
 import android.widget.ImageView.ScaleType;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class WelcomeActivity extends Activity
 {
     WelcomeActivity activity;
@@ -161,19 +165,37 @@ public class WelcomeActivity extends Activity
         map.put( R.id.item_tv_1, new YYListAdapter.onYYListItemHandler() {
             public void item_handle( Object view_obj, View convertView ) {
                 TextView tv_obj = (TextView)view_obj;
-                tv_obj.setText( item.tip1 );
+                tv_obj.setText( item.tags[0] );
+
+                if( item.tags[0] == null || item.tags[0].equals( "" ) ) {
+                    tv_obj.setVisibility( View.INVISIBLE );
+                } else {
+                    tv_obj.setVisibility( View.VISIBLE );
+                }
             }
         });
         map.put( R.id.item_tv_2, new YYListAdapter.onYYListItemHandler() {
             public void item_handle( Object view_obj, View convertView ) {
                 TextView tv_obj = (TextView)view_obj;
-                tv_obj.setText( item.tip2 );
+                tv_obj.setText( item.tags[1] );
+
+                if( item.tags[1] == null || item.tags[1].equals( "" ) ) {
+                    tv_obj.setVisibility( View.INVISIBLE );
+                } else {
+                    tv_obj.setVisibility( View.VISIBLE );
+                }
             }
         });
         map.put( R.id.item_tv_3, new YYListAdapter.onYYListItemHandler() {
             public void item_handle( Object view_obj, View convertView ) {
                 TextView tv_obj = (TextView)view_obj;
-                tv_obj.setText( item.tip3 );
+                tv_obj.setText( item.tags[2] );
+
+                if( item.tags[2] == null || item.tags[2].equals( "" ) ) {
+                    tv_obj.setVisibility( View.INVISIBLE );
+                } else {
+                    tv_obj.setVisibility( View.VISIBLE );
+                }
             }
         });
         map.put( R.id.btn_read, new YYListAdapter.onYYListItemHandler() {
@@ -190,7 +212,7 @@ public class WelcomeActivity extends Activity
         map.put( R.id.item_count_1, new YYListAdapter.onYYListItemHandler() {
             public void item_handle( Object view_obj, View convertView ) {
                 TextView tv_obj = (TextView)view_obj;
-                tv_obj.setText( String.format( "%d", item.read_count ) );
+                tv_obj.setText( item.read_count );
             }
         });
         map.put( R.id.btn_comment, new YYListAdapter.onYYListItemHandler() {
@@ -207,7 +229,7 @@ public class WelcomeActivity extends Activity
         map.put( R.id.item_count_2, new YYListAdapter.onYYListItemHandler() {
             public void item_handle( Object view_obj, View convertView ) {
                 TextView tv_obj = (TextView)view_obj;
-                tv_obj.setText( String.format( "%d", item.comment_count ) );
+                tv_obj.setText( item.comment_count );
             }
         });
         map.put( R.id.btn_zan, new YYListAdapter.onYYListItemHandler() {
@@ -235,7 +257,7 @@ public class WelcomeActivity extends Activity
         map.put( R.id.item_count_3, new YYListAdapter.onYYListItemHandler() {
             public void item_handle( Object view_obj, View convertView ) {
                 TextView tv_obj = (TextView)view_obj;
-                tv_obj.setText( String.format( "%d", item.zan_count ) );
+                tv_obj.setText( item.zan_count );
             }
         });
 
@@ -252,6 +274,52 @@ public class WelcomeActivity extends Activity
 
             lv.setVisibility( View.VISIBLE );
             item_3_list.setVisibility( View.GONE );
+
+            YYDataSource.getContentList( "", false, 5, ++YYDataSource.hp_curr_index,new YYHttpRequest.onResponseListener() {
+                public void onResponse( String rsp_data ) {
+                    Log.v( "Fly", "onResponse : " + rsp_data );
+                    try {
+                        JSONArray json_array = new JSONObject( rsp_data ).getJSONArray( "contents" );
+                        for( int i = 0; i < json_array.length(); ++i ) {
+                            JSONObject json_obj = (JSONObject)json_array.get( i );
+
+                            HomePageItem hp_item = new HomePageItem();
+                            hp_item.id = json_obj.getString( "_id" );
+
+                            JSONObject json_picture = json_obj.getJSONObject( "thumbnail" );
+                            hp_item.imageURL = "http://23.105.198.234" + json_picture.getString( "src" );
+
+                            hp_item.title = json_obj.getString( "title" );
+
+                            JSONObject json_user = json_obj.getJSONObject( "user" );
+                            hp_item.user_id = json_user.getString( "_id" );
+                            hp_item.user_email = json_user.getString( "email" );
+                            hp_item.user_nick_name = json_user.getString( "nickname" );
+
+                            JSONArray tags_array = json_obj.getJSONArray( "tags" );
+                            int max_tags_length = ( tags_array.length() > 3 ? 3 : tags_array.length() );
+                            for( int j=0; j < max_tags_length; ++j ) {
+                                hp_item.tags[j] = tags_array.getString( j );
+                            }
+
+                            JSONObject json_reading = json_obj.getJSONObject( "reading" );
+                            hp_item.read_count = json_reading.getString( "total" );
+
+                            hp_item.comment_count = json_obj.getString( "comments" );
+                            hp_item.zan_count = json_obj.getString( "likes" );
+
+                            YYDataSource.hp_item_list.add( hp_item );
+                        }
+                    } catch ( JSONException e ) {
+                        e.printStackTrace();
+                    }
+
+                    YYListAdapter.updateListViewTask task = new YYListAdapter.updateListViewTask();
+                    task.yy_adapter = (YYListAdapter)lv.getAdapter();
+                    task.yy_adapter.list_data = getItemListData();
+                    task.execute();
+                }
+            });
         }
     }
 

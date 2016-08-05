@@ -2,18 +2,20 @@ package com.yy2039.chigga;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 import android.util.Log;
 
-import org.json.JSONObject;
-import org.json.JSONException;
 
 public class YYDataSource {
     public static PersonalInfo persion_info = new PersonalInfo( "Charlie-The-Creator", false, "CTC-造物主，这是无法阻止的Charlie,你知道的...", 39, 3724, 68 );
 
+    public static int hp_curr_index = 0;
     public static List<HomePageItem> hp_item_list = new ArrayList<HomePageItem>();
 
     public YYDataSource() {
+        /*
         getHomePageItemList();
 
         for( int i=0; i < 25; ++i ) {
@@ -39,8 +41,10 @@ public class YYDataSource {
                 }
             }
         });
+        */
     }
 
+    /*
     public static void getHomePageItemList() {
         for( int i=0; i < 5; ++i ) {
             HomePageItem hp_item = new HomePageItem(
@@ -75,5 +79,18 @@ public class YYDataSource {
 
             hp_item_list.add( hp_item );
         }
+    }
+    */
+
+    public static void getContentList( String id, boolean is_delete, int page_size, int current_page, YYHttpRequest.onResponseListener rsp_listener ) {
+        String URL = "http://23.105.198.234/api/contents";
+
+        Map<String, String> data = new HashMap<String, String>();
+        //data.put( "_id", id );
+        //data.put( "deleted", is_delete ? "true" : "false" );
+        //data.put( "pageSize", String.format( "%d", page_size ) );
+        //data.put( "currentPage", String.format( "%d", current_page ) );
+
+        YYHttpRequest.sendGetRequest( URL, data, rsp_listener );
     }
 }
