@@ -151,7 +151,7 @@ public class WelcomeActivity extends Activity
         map.put( R.id.item_image, new YYListAdapter.onYYListItemHandler() {
             public void item_handle( Object view_obj, View convertView ) {
                 ImageView iv_obj = (ImageView)view_obj;
-                setImageViewResource( iv_obj, item.imageURL );
+                //setImageViewResource( iv_obj, item.imageURL );
             }
         });
         map.put( R.id.item_title, new YYListAdapter.onYYListItemHandler() {
@@ -428,20 +428,5 @@ public class WelcomeActivity extends Activity
         }, null );
         
         return charSequence;
-    }
-
-    public void setImageViewResource( final ImageView iv, String URL ) {
-        iv.setScaleType( ScaleType.FIT_XY );
-        Bitmap bitmap = yy_image_downloader.downloadImage( URL, new ImageDownLoader.onImageLoaderListener() {
-            public void onImageLoader( Bitmap bitmap, String url ) {
-                if( bitmap != null ) {
-                    iv.setImageBitmap( bitmap );
-                }
-            }
-        });
-
-        if( bitmap != null ) {
-            iv.setImageBitmap( bitmap );
-        }
     }
 }

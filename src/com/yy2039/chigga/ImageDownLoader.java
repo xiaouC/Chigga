@@ -22,6 +22,14 @@ import android.support.v4.util.LruCache;
 import android.util.Log;
 
 public class ImageDownLoader {
+    private static ImageDownLoader yy_image_downloader = null;
+    public static void init( Context context ) {
+        yy_image_downloader = new ImageDownLoader( context );
+    }
+    public static ImageDownLoader getInstance() {
+        return yy_image_downloader;
+    }
+
     /** 
      * 缓存Image的类，当存储Image的大小大于LruCache设定的值，系统自动释放内存 
      */  

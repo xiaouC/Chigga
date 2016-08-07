@@ -17,6 +17,9 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.FrameLayout;
 import android.util.Log;
 import java.lang.reflect.Field; 
+import android.graphics.Bitmap;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 public class Helper {
     /**
@@ -99,5 +102,20 @@ public class Helper {
         }
 
         view.startAnimation( anim );
+    }
+
+    public static void setImageViewResource( final ImageView iv, String URL ) {
+        iv.setScaleType( ScaleType.FIT_XY );
+        Bitmap bitmap = ImageDownLoader.getInstance().downloadImage( URL, new ImageDownLoader.onImageLoaderListener() {
+            public void onImageLoader( Bitmap bitmap, String url ) {
+                if( bitmap != null ) {
+                    iv.setImageBitmap( bitmap );
+                }
+            }
+        });
+
+        if( bitmap != null ) {
+            iv.setImageBitmap( bitmap );
+        }
     }
 }

@@ -93,4 +93,12 @@ public class YYDataSource {
 
         YYHttpRequest.sendGetRequest( URL, data, rsp_listener );
     }
+
+    public static void getContents( String id, YYHttpRequest.onResponseListener rsp_listener ) {
+        String URL = "http://23.105.198.234/api/contents:" + id;
+
+        Map<String, String> data = new HashMap<String, String>();
+
+        YYHttpRequest.sendGetRequest( URL, data, rsp_listener );
+    }
 }

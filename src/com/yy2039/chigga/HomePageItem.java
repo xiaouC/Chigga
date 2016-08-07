@@ -115,6 +115,12 @@ public class HomePageItem {
         });
         View view = hp_detail_dlg.yy_view;
 
+        YYDataSource.getContents( id, new YYHttpRequest.onResponseListener() {
+            public void onResponse( String rsp_data ) {
+                Log.v( "Fly", "showDetail getContents onResponse : " + rsp_data );
+            }
+        });
+
         // btn_attention
         final ImageButton attention_obj = (ImageButton)view.findViewById( R.id.btn_attention );
         attention_obj.setImageResource( is_attention ? R.drawable.attention_action_2 : R.drawable.attention_action_1 );
@@ -125,14 +131,6 @@ public class HomePageItem {
                 attention_obj.setImageResource( is_attention ? R.drawable.attention_action_2 : R.drawable.attention_action_1 );
             }
         });
-
-        //// read count
-        //TextView tv_read_count_obj = (TextView)view.findViewById( R.id.read_count );
-        //tv_read_count_obj.setText( "" + read_count );
-
-        //// content
-        //TextView tv_content_obj = (TextView)view.findViewById( R.id.content );
-        //tv_content_obj.setText( page_content );
 
         // head zan
         final ImageButton ib_head_zan_obj = (ImageButton)view.findViewById( R.id.btn_head_zan );
