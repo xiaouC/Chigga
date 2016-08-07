@@ -14,6 +14,8 @@ import android.widget.ScrollView;
 import android.widget.ImageButton;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
+import android.webkit.WebSettings;
+import android.webkit.WebViewClient;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -191,7 +193,18 @@ public class YYCategoryItem {
                 View content_view = LayoutInflater.from( activity ).inflate( R.layout.category_item_content_view, null );
                 ((ScrollView)view).addView( content_view );
 
+                // 
                 WebView wv = (WebView)content_view.findViewById( R.id.web_view );
+                WebSettings wSet = wv.getSettings();    
+                wSet.setJavaScriptEnabled( true );
+                wv.setWebViewClient( new WebViewClient() {
+                    // 重写此方法表明点击网页里面的链接还是在当前的 webview 里跳转，不跳到浏览器那边
+                    public boolean shouldOverrideUrlLoading( WebView view, String url ) {
+                        view.loadUrl( url );
+
+                        return true;
+                    }
+                });
                 wv.loadUrl( "http://www.163.com" );
 
                 // btn_attention
