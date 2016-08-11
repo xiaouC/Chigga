@@ -147,7 +147,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="30dp"
                 android:layout_marginRight="30dp"
-                android:imeOptions="actionNext"
                 android:hint="@string/personal_information_view_nick_name_hint"
                 />
         </LinearLayout>

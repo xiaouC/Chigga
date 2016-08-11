@@ -25,4 +25,9 @@
     <string name="personal_information_view_male">男</string>
     <string name="personal_information_view_female">女</string>
     <string name="personal_information_view_others">其他</string>
+    <string name="login_view_title">快捷登陆</string>
+    <string name="login_view_tips">登陆认证后才能成为一名真正的Chigga哦！</string>
+    <string name="login_view_phone_number_hint">请输入手机号码</string>
+    <string name="login_view_verification_code_hint">请输入验证码</string>
+    <string name="login_view_get_verification_code">获取验证码</string>
 </resources>
