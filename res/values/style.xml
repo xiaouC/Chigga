@@ -30,4 +30,9 @@
         <item name="android:gravity">center</item>
         <item name="android:background">@color/transparent</item>
     </style>
+    <style name="HalfTransparent">
+        <item name="android:windowBackground">@color/half_transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@+android:style/Animation.Translucent</item>
+    </style>
 </resources>

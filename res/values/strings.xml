@@ -16,4 +16,13 @@
     <string name="more">更多</string>
     <string name="comment_hint">随便说点奇格的</string>
     <string name="load_more">上拉加载更多</string>
+    <string name="personal_category_view_settings">设置</string>
+    <string name="personal_information_view_title">填写用户信息</string>
+    <string name="personal_information_view_head">头像</string>
+    <string name="personal_information_view_nick_name">昵称</string>
+    <string name="personal_information_view_nick_name_hint">让其他Chigga怎么称呼你？</string>
+    <string name="personal_information_view_sex">性别</string>
+    <string name="personal_information_view_male">男</string>
+    <string name="personal_information_view_female">女</string>
+    <string name="personal_information_view_others">其他</string>
 </resources>

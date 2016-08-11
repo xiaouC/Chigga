@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import android.os.Bundle;
+import android.content.Intent;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -112,7 +113,13 @@ public class MainActivity extends Activity {
                     }
 
                     // 
-                    showCategory( index );
+                    if( index == 1 ) {
+                        Intent intent = new Intent();
+                        intent.setClass( MainActivity.this, YYLoginActivity.class );
+                        startActivity( intent );
+                    } else {
+                        showCategory( index );
+                    }
                 }
             };
 

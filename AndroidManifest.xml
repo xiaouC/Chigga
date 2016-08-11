@@ -17,6 +17,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--android:theme="@style/HalfTransparent"-->
+        <activity
+            android:name=".YYLoginActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent"
+            >
+        </activity>
+        <activity
+            android:name=".YYPersonalInformationViewActivity"
+            android:label="@string/app_name"
+            >
+        </activity>
     </application>
 
     <supports-screens

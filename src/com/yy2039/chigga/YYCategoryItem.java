@@ -188,7 +188,7 @@ public class YYCategoryItem {
     }
 
     public void showCategoryItemContent( final Activity activity ) {
-        YYShowDialog.createScrollViewDialog( activity, activity.getString( R.string.item_name_1 ), new YYShowDialog.onDialogListener() {
+        final YYShowDialog category_item_dlg = YYShowDialog.createScrollViewDialog( activity, activity.getString( R.string.item_name_1 ), new YYShowDialog.onDialogListener() {
             public void onInitContentView( View view ) {
                 View content_view = LayoutInflater.from( activity ).inflate( R.layout.category_item_content_view, null );
                 ((ScrollView)view).addView( content_view );

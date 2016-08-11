@@ -135,4 +135,24 @@
                 />
         </LinearLayout>
     </LinearLayout>
+
+    <!-- more -->
+    <TableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        >
+        <!-- settings -->
+        <TableRow>
+            <Button
+                android:id="@+id/settings"
+                android:layout_width="fill_parent"
+                android:layout_height="20dp"
+                android:text="@string/personal_category_view_settings"
+                />
+        </TableRow>
+    </TableLayout>
 </LinearLayout>

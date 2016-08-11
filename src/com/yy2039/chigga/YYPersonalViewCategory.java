@@ -1,7 +1,9 @@
 package com.yy2039.chigga;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.view.LayoutInflater;
 import android.widget.TextView;
@@ -44,6 +46,16 @@ public class YYPersonalViewCategory extends YYCategory {
         my_published_obj.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) { YYDataSource.persion_info.showMyPublishedView( category_activity ); }
+        });
+
+        Button settings_obj = (Button)category_personal_view.findViewById( R.id.settings );
+        settings_obj.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass( category_activity, YYPersonalInformationViewActivity.class );
+                category_activity.startActivity( intent );
+            }
         });
 
         return category_personal_view;
